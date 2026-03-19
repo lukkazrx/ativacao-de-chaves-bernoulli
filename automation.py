@@ -41,13 +41,23 @@ def salvar_historico(dados: dict):
         json.dump(historico, f, ensure_ascii=False, indent=2)
 
 
+# Mapeamento fixo de coleção para segmento e série
+MAPA_COLECAO = {
+    "EF6": ("Ensino Fundamental Anos Finais", "6º Ano"),
+    "EF7": ("Ensino Fundamental Anos Finais", "7º Ano"),
+    "EF8": ("Ensino Fundamental Anos Finais", "8º Ano"),
+    "EF9": ("Ensino Fundamental Anos Finais", "9º Ano"),
+    "EM1": ("Ensino Médio", "1ª Série"),
+    "EM2": ("Ensino Médio", "2ª Série"),
+    "EM3": ("Ensino Médio", "3ª Série"),
+}
+
+
 def executar_automacao(
     login: str,
     senha: str,
     colecao: str,
     volume: str,
-    segmento: str,
-    serie: str,
     ano_letivo: str,
     caminho_csv: str,
 ):
@@ -55,6 +65,7 @@ def executar_automacao(
     Função geradora que executa a automação e yields mensagens de log.
     Uso: for msg in executar_automacao(...): print(msg)
     """
+    segmento, serie = MAPA_COLECAO.get(colecao, ("Ensino Fundamental Anos Finais", "6º Ano"))
 
     inicio = datetime.now()
     encontrados = []

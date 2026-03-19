@@ -33,8 +33,6 @@ async def executar(
     senha: str = Form(...),
     colecao: str = Form(...),
     volume: str = Form(...),
-    segmento: str = Form(...),
-    serie: str = Form(...),
     ano_letivo: str = Form(...),
     csv_file: UploadFile = File(...),
 ):
@@ -53,8 +51,6 @@ async def executar(
             senha=senha,
             colecao=colecao,
             volume=volume,
-            segmento=segmento,
-            serie=serie,
             ano_letivo=ano_letivo,
             caminho_csv=caminho_csv,
         ):

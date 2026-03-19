@@ -1,15 +1,15 @@
 const API = "http://127.0.0.1:8000";
 
 // ── Elementos ──────────────────────────────────────────────────
-const btnExecutar       = document.getElementById("btnExecutar");
-const btnHistorico      = document.getElementById("btnHistorico");
+const btnExecutar        = document.getElementById("btnExecutar");
+const btnHistorico       = document.getElementById("btnHistorico");
 const btnLimparHistorico = document.getElementById("btnLimparHistorico");
-const logBox            = document.getElementById("logBox");
-const statusPill        = document.getElementById("statusPill");
-const fileDrop          = document.getElementById("fileDrop");
-const csvFile           = document.getElementById("csvFile");
-const fileLabel         = document.getElementById("fileLabel");
-const historicoBox      = document.getElementById("historicoBox");
+const logBox             = document.getElementById("logBox");
+const statusPill         = document.getElementById("statusPill");
+const fileDrop           = document.getElementById("fileDrop");
+const csvFile            = document.getElementById("csvFile");
+const fileLabel          = document.getElementById("fileLabel");
+const historicoBox       = document.getElementById("historicoBox");
 
 // ── Verifica status da API ─────────────────────────────────────
 async function verificarStatus() {
@@ -53,14 +53,14 @@ fileDrop.addEventListener("drop", (e) => {
   e.preventDefault();
   fileDrop.classList.remove("over");
   const file = e.dataTransfer.files[0];
-  if (file && file.name.endsWith(".csv")) {
+  if (file && (file.name.endsWith(".csv") || file.name.endsWith(".xlsx"))) {
     const dt = new DataTransfer();
     dt.items.add(file);
     csvFile.files = dt.files;
     fileLabel.textContent = file.name;
     fileLabel.classList.add("selected");
   } else {
-    adicionarLog("❌ Arquivo inválido. Envie um .csv", "err");
+    adicionarLog("❌ Arquivo inválido. Envie um .csv ou .xlsx", "err");
   }
 });
 
@@ -90,8 +90,6 @@ btnExecutar.addEventListener("click", async () => {
   const senha     = document.getElementById("senha").value.trim();
   const colecao   = document.getElementById("colecao").value.trim();
   const volume    = document.getElementById("volume").value.trim();
-  const segmento  = document.getElementById("segmento").value.trim();
-  const serie     = document.getElementById("serie").value.trim();
   const anoLetivo = document.getElementById("anoLetivo").value.trim();
   const arquivo   = csvFile.files[0];
 
@@ -100,7 +98,7 @@ btnExecutar.addEventListener("click", async () => {
     return;
   }
   if (!arquivo) {
-    adicionarLog("❌ Selecione o arquivo CSV de alunos.", "err");
+    adicionarLog("❌ Selecione o arquivo de alunos.", "err");
     return;
   }
 
@@ -109,8 +107,6 @@ btnExecutar.addEventListener("click", async () => {
   form.append("senha", senha);
   form.append("colecao", colecao);
   form.append("volume", volume);
-  form.append("segmento", segmento);
-  form.append("serie", serie);
   form.append("ano_letivo", anoLetivo);
   form.append("csv_file", arquivo);
 
@@ -182,7 +178,7 @@ async function carregarHistorico() {
             ⏱ ${item.duracao_segundos}s
           </div>
           ${item.nao_encontrados?.length
-            ? `<div class="hist-meta" style="color:#f87171">❌ Não encontrados: ${item.nao_encontrados.join(", ")}</div>`
+            ? `<div class="hist-meta" style="color:#ff3b30">❌ Não encontrados: ${item.nao_encontrados.join(", ")}</div>`
             : ""}
         </div>
         <div style="display:flex;align-items:center;gap:10px;">
@@ -192,7 +188,6 @@ async function carregarHistorico() {
       </div>
     `).join("");
 
-    // Eventos nos botões de excluir item
     document.querySelectorAll(".btn-excluir-item").forEach(btn => {
       btn.addEventListener("click", async (e) => {
         const idx = e.currentTarget.dataset.idx;
@@ -228,6 +223,10 @@ btnLimparHistorico.addEventListener("click", async () => {
   } catch {
     alert("Erro de conexão ao limpar histórico.");
   }
+});
+
+btnLimparLog.addEventListener("click", () => {
+  logBox.innerHTML = '<span class="log-placeholder">O log aparecerá aqui durante a execução...</span>';
 });
 
 btnHistorico.addEventListener("click", carregarHistorico);

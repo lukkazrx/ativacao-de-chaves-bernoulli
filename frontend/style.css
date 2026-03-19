@@ -148,8 +148,8 @@ main {
   flex-direction: column;
 }
 
-#logCard { max-height: 530px; overflow: hidden; }
-#logCard .log-box { flex: 1; height: 380px; max-height: 380px; overflow-y: auto; }
+#formCard, #logCard { height: 360px; overflow: hidden; }
+#logCard .log-box { flex: 1; height: 240px; max-height: 240px; overflow-y: auto; }
 
 .card:nth-child(2) { animation-delay: 0.07s; }
 .card:nth-child(3) { animation-delay: 0.14s; }
@@ -157,6 +157,12 @@ main {
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+.log-footer {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 10px;
 }
 
 .card-label {

@@ -157,6 +157,55 @@ btnExecutar.addEventListener("click", async () => {
   }
 });
 
+// ── Dashboard ──────────────────────────────────────────────────
+let dashChartInstance = null;
+
+function atualizarDashboard(data) {
+  if (!data.length) return;
+
+  const totalChaves    = data.reduce((s, i) => s + (i.encontrados || 0), 0);
+  const totalAlunos    = data.reduce((s, i) => s + (i.total_alunos || 0), 0);
+  const totalNaoEnc    = data.reduce((s, i) => s + (i.nao_encontrados?.length || 0), 0);
+  const taxaSucesso    = totalAlunos > 0 ? ((totalChaves / totalAlunos) * 100).toFixed(1) : 0;
+
+  document.getElementById("dashTotalChaves").textContent    = totalChaves.toLocaleString("pt-BR");
+  document.getElementById("dashTaxaSucesso").textContent    = taxaSucesso + "%";
+  document.getElementById("dashTotalExecucoes").textContent = data.length;
+
+  const ctx = document.getElementById("dashChart").getContext("2d");
+  if (dashChartInstance) dashChartInstance.destroy();
+  dashChartInstance = new Chart(ctx, {
+    type: "doughnut",
+    data: {
+      labels: ["Encontrados", "Não encontrados"],
+      datasets: [{
+        data: [totalChaves, totalNaoEnc],
+        backgroundColor: ["rgba(52,199,89,0.8)", "rgba(255,59,48,0.7)"],
+        borderColor: ["#34c759", "#ff3b30"],
+        borderWidth: 1.5,
+      }]
+    },
+    options: {
+      cutout: "70%",
+      plugins: {
+        legend: {
+          position: "bottom",
+          labels: { font: { size: 12 }, padding: 16 }
+        }
+      }
+    }
+  });
+}
+
+// ── Toggle não encontrados ─────────────────────────────────────
+function toggleNaoEncontrados(btn) {
+  const lista = btn.nextElementSibling;
+  const seta  = btn.querySelector('.seta');
+  const aberto = lista.style.display === 'block';
+  lista.style.display = aberto ? 'none' : 'block';
+  seta.textContent = aberto ? '▾' : '▴';
+}
+
 // ── Histórico — carregar ───────────────────────────────────────
 async function carregarHistorico() {
   try {
@@ -168,6 +217,8 @@ async function carregarHistorico() {
       return;
     }
 
+    atualizarDashboard(data);
+
     historicoBox.innerHTML = data.map((item, idx) => `
       <div class="hist-item" data-idx="${idx}">
         <div class="hist-info">
@@ -178,7 +229,14 @@ async function carregarHistorico() {
             ⏱ ${item.duracao_segundos}s
           </div>
           ${item.nao_encontrados?.length
-            ? `<div class="hist-meta" style="color:#ff3b30">❌ Não encontrados: ${item.nao_encontrados.join(", ")}</div>`
+            ? `<div class="hist-meta nao-encontrados-resumo" style="margin-top:6px">
+                <button class="btn-expandir" onclick="toggleNaoEncontrados(this)">
+                  ❌ ${item.nao_encontrados.length} não encontrados <span class="seta">▾</span>
+                </button>
+                <div class="nao-encontrados-lista" style="display:none">
+                  ${item.nao_encontrados.map(n => `<span class="nao-encontrado-item">${n}</span>`).join('<br>')}
+                </div>
+              </div>`
             : ""}
         </div>
         <div style="display:flex;align-items:center;gap:10px;">

@@ -125,14 +125,16 @@ main {
   grid-template-columns: 1fr 1fr;
   grid-template-areas:
     "form  log"
+    "dash  dash"
     "hist  hist";
   gap: 16px;
   align-items: start;
 }
 
-#formCard      { grid-area: form; }
-#logCard       { grid-area: log; }
-#historicoCard { grid-area: hist; }
+#formCard       { grid-area: form; }
+#logCard        { grid-area: log; }
+#dashboardCard  { grid-area: dash; }
+#historicoCard  { grid-area: hist; }
 
 /* ── Cards ─────────────────────────────────────────────────── */
 .card {
@@ -474,4 +476,88 @@ select:focus {
   }
   .card { padding: 20px; }
   .form-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Não encontrados expansível ────────────────────────────── */
+.btn-expandir {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--font);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--err);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: opacity 0.15s;
+}
+
+.btn-expandir:hover { opacity: 0.7; }
+
+.seta { font-size: 0.7rem; transition: transform 0.2s; }
+
+.nao-encontrados-lista {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 160px;
+  overflow-y: auto;
+  padding: 10px;
+  background: rgba(255,59,48,0.04);
+  border: 1px solid rgba(255,59,48,0.12);
+  border-radius: var(--radius-sm);
+}
+
+.nao-encontrado-item {
+  font-size: 0.75rem;
+  color: var(--err);
+  padding: 3px 0;
+  border-bottom: 1px solid rgba(255,59,48,0.08);
+}
+
+.nao-encontrado-item:last-child { border-bottom: none; }
+
+/* ── Dashboard ─────────────────────────────────────────────── */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.dash-metric {
+  background: #fafafa;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  text-align: center;
+  transition: box-shadow 0.15s;
+}
+
+.dash-metric:hover { box-shadow: var(--shadow); background: #fff; }
+
+.dash-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.dash-label {
+  font-size: 0.75rem;
+  color: var(--text-2);
+  font-weight: 500;
+}
+
+.dash-chart-wrap {
+  max-width: 220px;
+  margin: 0 auto;
 }

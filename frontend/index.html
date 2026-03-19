@@ -62,28 +62,6 @@
             <option value="Volume Único">Volume Único</option>
           </select>
         </div>
-
-        <!-- <div class="field-group">
-          <label>Segmento</label>
-          <select id="segmento">
-            <option value="Ensino Fundamental Anos Finais">Ensino Fundamental Anos Finais</option>
-            <option value="Ensino Médio">Ensino Médio</option>
-          </select>
-        </div> -->
-
-        <!-- <div class="field-group">
-          <label>Série</label>
-          <select id="serie">
-            <option value="6º Ano">6º Ano</option>
-            <option value="7º Ano">7º Ano</option>
-            <option value="8º Ano">8º Ano</option>
-            <option value="9º Ano">9º Ano</option>
-            <option value="1ª Série">1ª Série</option>
-            <option value="2ª Série">2ª Série</option>
-            <option value="3ª Série">3ª Série</option>
-          </select>
-        </div> -->
-
         <div class="field-group">
           <label>Ano Letivo</label>
           <select id="anoLetivo">
@@ -121,6 +99,28 @@
       </div>
     </section>
 
+    <!-- DASHBOARD -->
+    <section class="card" id="dashboardCard">
+      <div class="card-label">Dashboard</div>
+      <div class="dashboard-grid">
+        <div class="dash-metric">
+          <span class="dash-value" id="dashTotalChaves">—</span>
+          <span class="dash-label">Chaves ativadas no total</span>
+        </div>
+        <div class="dash-metric">
+          <span class="dash-value" id="dashTaxaSucesso">—</span>
+          <span class="dash-label">Taxa de sucesso</span>
+        </div>
+        <div class="dash-metric">
+          <span class="dash-value" id="dashTotalExecucoes">—</span>
+          <span class="dash-label">Execuções realizadas</span>
+        </div>
+      </div>
+      <div class="dash-chart-wrap">
+        <canvas id="dashChart"></canvas>
+      </div>
+    </section>
+
     <!-- HISTÓRICO -->
     <section class="card" id="historicoCard">
       <div class="card-label">Histórico de Execuções</div>
@@ -135,6 +135,7 @@
 
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="/script.js"></script>
 </body>
 </html>

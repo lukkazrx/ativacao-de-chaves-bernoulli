@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bernoulli — Ativação de Chaves</title>
+  <link rel="stylesheet" href="/style.css" />
+  <link rel="icon" sizes="16x16" type="image/png" href="/img/favicon-16x16.png">
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">⬡</span>
+        <span class="logo-text">Bernoulli <em>Auto</em></span>
+      </div>
+      <div class="status-pill" id="statusPill">
+        <span class="dot"></span> API offline
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- FORMULÁRIO -->
+    <section class="card" id="formCard">
+      <div class="card-label">Configuração</div>
+
+      <div class="form-grid">
+
+        <div class="field-group">
+          <label>Login</label>
+          <input type="text" id="login" placeholder="seu.login" autocomplete="off"/>
+        </div>
+
+        <div class="field-group">
+          <label>Senha</label>
+          <input type="password" id="senha" placeholder="••••••••"/>
+        </div>
+
+        <div class="field-group">
+          <label>Coleção</label>
+          <select id="colecao">
+            <option value="EF6">EF6</option>
+            <option value="EF7">EF7</option>
+            <option value="EF8">EF8</option>
+            <option value="EF9">EF9</option>
+            <option value="EM1">EM1</option>
+            <option value="EM2">EM2</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label>Volume</label>
+          <select id="volume">
+            <option value="Volume 1" selected>Volume 1</option>
+            <option value="Volume 2">Volume 2</option>
+            <option value="Volume 3">Volume 3</option>
+            <option value="Volume 4">Volume 4</option>
+            <option value="Volume 5">Volume 5</option>
+            <option value="Volume Único">Volume Único</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label>Segmento</label>
+          <select id="segmento">
+            <option value="Ensino Fundamental Anos Finais">Ensino Fundamental Anos Finais</option>
+            <option value="Ensino Médio">Ensino Médio</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label>Série</label>
+          <select id="serie">
+            <option value="6º Ano">6º Ano</option>
+            <option value="7º Ano">7º Ano</option>
+            <option value="8º Ano">8º Ano</option>
+            <option value="9º Ano">9º Ano</option>
+            <option value="1ª Série">1ª Série</option>
+            <option value="2ª Série">2ª Série</option>
+            <option value="3ª Série">3ª Série</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label>Ano Letivo</label>
+          <select id="anoLetivo">
+            <option value="2026" selected>2026</option>
+            <option value="2027">2027</option>
+            <option value="2028">2028</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label>Arquivo de Alunos</label>
+          <div class="file-drop" id="fileDrop">
+            <input type="file" id="csvFile" accept=".csv,.xlsx" hidden/>
+            <span class="file-icon">📎</span>
+            <span class="file-label" id="fileLabel">Clique ou arraste o arquivo .csv ou .xlsx</span>
+          </div>
+        </div>
+
+      </div>
+
+      <button class="btn-executar" id="btnExecutar">
+        <span>Executar Automação</span>
+        <span class="btn-arrow">→</span>
+      </button>
+    </section>
+
+    <!-- LOG EM TEMPO REAL -->
+    <section class="card" id="logCard">
+      <div class="card-label">Log em Tempo Real</div>
+      <div class="log-box" id="logBox">
+        <span class="log-placeholder">O log aparecerá aqui durante a execução...</span>
+      </div>
+    </section>
+
+    <!-- HISTÓRICO -->
+    <section class="card" id="historicoCard">
+      <div class="card-label">Histórico de Execuções</div>
+      <div id="historicoBox">
+        <span class="log-placeholder">Nenhuma execução registrada ainda.</span>
+      </div>
+      <div class="hist-actions">
+        <button class="btn-secundario" id="btnHistorico">↻ Atualizar</button>
+        <button class="btn-perigo" id="btnLimparHistorico">🗑 Limpar tudo</button>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="/script.js"></script>
+</body>
+</html>

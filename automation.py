@@ -14,6 +14,9 @@ import os
 from datetime import datetime
 
 
+# Flag global de cancelamento
+cancelar_automacao = False
+
 def normalizar(texto):
     texto = texto.strip().lower()
     texto = unicodedata.normalize('NFKD', texto)
@@ -167,8 +170,13 @@ def executar_automacao(
         nomes_pagina = {normalizar(s.text): s for s in spans}
 
         # --- Selecionar alunos ---
+        global cancelar_automacao
+        cancelar_automacao = False
         yield "🖱️ Iniciando seleção dos alunos..."
         for nome in nomes:
+            if cancelar_automacao:
+                yield "⚠️ Automação cancelada pelo usuário."
+                break
             nome_normalizado = normalizar(nome)
             if nome_normalizado in nomes_pagina:
                 span = nomes_pagina[nome_normalizado]

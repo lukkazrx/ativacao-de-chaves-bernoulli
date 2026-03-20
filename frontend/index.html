@@ -27,18 +27,18 @@
     <section class="card" id="formCard">
       <div class="card-label">Configuração</div>
 
-      <div class="form-grid">
-
+      <div class="form-row">
         <div class="field-group">
           <label>Login</label>
           <input type="text" id="login" placeholder="seu.login" autocomplete="off"/>
         </div>
-
         <div class="field-group">
           <label>Senha</label>
           <input type="password" id="senha" placeholder="••••••••"/>
         </div>
+      </div>
 
+      <div class="form-row">
         <div class="field-group">
           <label>Coleção</label>
           <select id="colecao">
@@ -50,7 +50,6 @@
             <option value="EM2">EM2</option>
           </select>
         </div>
-
         <div class="field-group">
           <label>Volume</label>
           <select id="volume">
@@ -70,8 +69,10 @@
             <option value="2028">2028</option>
           </select>
         </div>
+      </div>
 
-        <div class="field-group">
+      <div class="form-row">
+        <div class="field-group" style="flex:1">
           <label>Arquivo de Alunos</label>
           <div class="file-drop" id="fileDrop">
             <input type="file" id="csvFile" accept=".csv,.xlsx" hidden/>
@@ -79,13 +80,21 @@
             <span class="file-label" id="fileLabel">Clique ou arraste o arquivo .csv ou .xlsx</span>
           </div>
         </div>
-
       </div>
 
-      <button class="btn-executar" id="btnExecutar">
-        <span>Executar Automação</span>
-        <span class="btn-arrow">→</span>
-      </button>
+      <div class="bottom-actions">
+        <div class="cred-group">
+          <label>Credenciais</label>
+          <div class="cred-btns">
+            <button class="btn-secundario" id="btnSalvarCred">💾 Salvar</button>
+            <button class="btn-perigo" id="btnApagarCred">🗑 Apagar</button>
+          </div>
+        </div>
+        <button class="btn-executar" id="btnExecutar">
+          <span>Executar Automação</span>
+          <span class="btn-arrow">→</span>
+        </button>
+      </div>
     </section>
 
     <!-- LOG EM TEMPO REAL -->
@@ -96,6 +105,7 @@
       </div>
       <div class="log-footer">
         <button class="btn-secundario" id="btnLimparLog">✕ Limpar</button>
+        <button class="btn-perigo" id="btnPararAutomacao">⏹ Parar</button>
       </div>
     </section>
 
@@ -129,6 +139,8 @@
       </div>
       <div class="hist-actions">
         <button class="btn-secundario" id="btnHistorico">↻ Atualizar</button>
+        <button class="btn-secundario" id="btnExportarPDF">📄 Exportar PDF</button>
+        <button class="btn-secundario" id="btnExportarExcel">📊 Exportar Excel</button>
         <button class="btn-perigo" id="btnLimparHistorico">🗑 Limpar tudo</button>
       </div>
     </section>
@@ -136,6 +148,9 @@
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
   <script src="/script.js"></script>
 </body>
 </html>

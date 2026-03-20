@@ -5,6 +5,7 @@ from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.responses import StreamingResponse, JSONResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
+import automation
 from automation import executar_automacao
 
 app = FastAPI(title="Bernoulli Automação")
@@ -103,6 +104,13 @@ def deletar_item_historico(indice: int):
     dados.pop(indice)
     with open(arquivo, "w", encoding="utf-8") as f:
         json.dump(dados, f, ensure_ascii=False, indent=2)
+    return JSONResponse(content={"ok": True})
+
+
+# Cancelar automação
+@app.post("/cancelar")
+def cancelar():
+    automation.cancelar_automacao = True
     return JSONResponse(content={"ok": True})
 
 

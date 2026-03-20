@@ -163,7 +163,8 @@ main {
 
 .log-footer {
   display: flex;
-  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
   margin-top: 10px;
 }
 
@@ -177,12 +178,13 @@ main {
 }
 
 /* ── Form grid ─────────────────────────────────────────────── */
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+.form-row {
+  display: flex;
   gap: 12px;
-  margin-bottom: 24px;
+  margin-bottom: 12px;
 }
+
+.form-row .field-group { flex: 1; min-width: 0; }
 
 .field-group { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 
@@ -442,7 +444,9 @@ select:focus {
   color: #248a3d;
 }
 
-.btn-excluir-item {
+.btn-excluir-item,
+.btn-pdf-item,
+.btn-excel-item {
   background: transparent;
   border: none;
   color: var(--text-3);
@@ -457,6 +461,11 @@ select:focus {
 .btn-excluir-item:hover {
   color: var(--err);
   background: rgba(255,59,48,0.08);
+}
+
+.btn-pdf-item:hover {
+  color: var(--accent);
+  background: rgba(0,113,227,0.08);
 }
 
 /* ── Scrollbar ─────────────────────────────────────────────── */
@@ -541,7 +550,7 @@ select:focus {
   transition: box-shadow 0.15s;
 }
 
-.dash-metric:hover { box-shadow: var(--shadow); background: #fff; }
+
 
 .dash-value {
   font-size: 2rem;
@@ -560,4 +569,32 @@ select:focus {
 .dash-chart-wrap {
   max-width: 220px;
   margin: 0 auto;
+}
+/* ── Bottom actions ─────────────────────────────────────────── */
+.bottom-actions {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  margin-top: auto;
+}
+
+.bottom-actions .btn-executar {
+  flex: 1;
+  margin-top: 0;
+}
+
+.cred-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cred-btns {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-excel-item:hover {
+  color: #248a3d;
+  background: rgba(52,199,89,0.08);
 }

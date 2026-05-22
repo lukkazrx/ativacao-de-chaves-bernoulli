@@ -43,11 +43,27 @@
           <label>Coleção</label>
           <select id="colecao">
             <option value="EF6">EF6</option>
+            <option value="MATBAS6">MATBAS6</option>
             <option value="EF7">EF7</option>
+            <option value="MATBAS7">MATBAS7</option>
             <option value="EF8">EF8</option>
+            <option value="MATBAS8">MATBAS8</option>
             <option value="EF9">EF9</option>
+            <option value="MATBAS9">MATBAS9</option>
             <option value="EM1">EM1</option>
+            <option value="MATBAS1">MATBAS1</option>
             <option value="EM2">EM2</option>
+            <option value="MAISBIO">MAISBIO</option>
+            <option value="MAISFIS">MAISFIS</option>
+            <option value="MAISGEO">MAISGEO</option>
+            <option value="MAISHIS">MAISHIS</option>
+            <option value="MAISMAT">MAISMAT</option>
+            <option value="MAISQUI">MAISQUI</option>
+            <option value="MRED">MRED</option>
+            <option value="EM3">EM3</option>
+            <option value="OFICINARED">OFICINARED</option>
+            <option value="RACIOITI">RACIOITI</option>
+            <option value="2V1S">2V1S</option>
           </select>
         </div>
         <div class="field-group">
@@ -111,7 +127,12 @@
 
     <!-- DASHBOARD -->
     <section class="card" id="dashboardCard">
-      <div class="card-label">Dashboard</div>
+      <div class="dash-top">
+        <div class="card-label" style="margin-bottom:0">Dashboard</div>
+        <select id="dashSelect">
+          <option value="geral">Visão Geral</option>
+        </select>
+      </div>
       <div class="dashboard-grid">
         <div class="dash-metric">
           <span class="dash-value" id="dashTotalChaves">—</span>

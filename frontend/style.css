@@ -598,3 +598,19 @@ select:focus {
   color: #248a3d;
   background: rgba(52,199,89,0.08);
 }
+
+/* ── Dashboard select ───────────────────────────────────────── */
+.dash-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.dash-top select {
+  font-size: 0.8rem;
+  padding: 5px 28px 5px 10px;
+  width: auto;
+  height: 32px;
+  color: var(--text-2);
+}

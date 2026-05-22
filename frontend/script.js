@@ -165,6 +165,27 @@ btnExecutar.addEventListener("click", async () => {
 
 // ── Dashboard ──────────────────────────────────────────────────
 let dashChartInstance = null;
+let dashData = [];
+
+function popularSelectDash(data) {
+  const select = document.getElementById("dashSelect");
+  // Mantém apenas a opção geral
+  select.innerHTML = '<option value="geral">Visão Geral</option>';
+  data.forEach((item, idx) => {
+    const opt = document.createElement("option");
+    opt.value = idx;
+    opt.textContent = `${item.colecao} — ${item.volume} — ${item.data}`;
+    select.appendChild(opt);
+  });
+}
+
+document.getElementById("dashSelect").addEventListener("change", (e) => {
+  if (e.target.value === "geral") {
+    atualizarDashboard(dashData);
+  } else {
+    atualizarDashboard([dashData[parseInt(e.target.value)]]);
+  }
+});
 
 function atualizarDashboard(data) {
   if (!data.length) return;
@@ -233,6 +254,8 @@ async function carregarHistorico() {
       return;
     }
 
+    dashData = data;
+    popularSelectDash(data);
     atualizarDashboard(data);
 
     historicoBox.innerHTML = data.map((item, idx) => `

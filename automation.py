@@ -6,6 +6,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 from time import sleep
+import random
 import pandas as pd
 import unicodedata
 import re
@@ -48,11 +49,26 @@ def salvar_historico(dados: dict):
 MAPA_COLECAO = {
     "EF6": ("Ensino Fundamental Anos Finais", "6º Ano"),
     "EF7": ("Ensino Fundamental Anos Finais", "7º Ano"),
+    "MATBAS7": ("Ensino Fundamental Anos Finais", "7º Ano"),
     "EF8": ("Ensino Fundamental Anos Finais", "8º Ano"),
+    "MATBAS8": ("Ensino Fundamental Anos Finais", "8º Ano"),
     "EF9": ("Ensino Fundamental Anos Finais", "9º Ano"),
+    "MATBAS9": ("Ensino Fundamental Anos Finais", "9º Ano"),
     "EM1": ("Ensino Médio", "1ª Série"),
+    "MATBAS1": ("Ensino Médio", "1ª Série"),
     "EM2": ("Ensino Médio", "2ª Série"),
     "EM3": ("Ensino Médio", "3ª Série"),
+    "MAISBIO": ("Ensino Médio", "2ª Série"),
+    "MAISFIS": ("Ensino Médio", "2ª Série"),
+    "MAISGEO": ("Ensino Médio", "2ª Série"),
+    "MAISHIS": ("Ensino Médio", "2ª Série"),
+    "MAISMAT": ("Ensino Médio", "2ª Série"),
+    "MAISQUI": ("Ensino Médio", "2ª Série"),
+    "MRED": ("Ensino Médio", "2ª Série"),
+    "MATBAS2": ("Ensino Médio", "2ª Série"),
+    "RACIOITI": ("Ensino Médio", "3ª Série"),
+    "OFICINARED": ("Ensino Médio", "3ª Série"),
+    "2V1S": ("Ensino Médio", "3ª Série"),
 }
 
 
@@ -89,12 +105,29 @@ def executar_automacao(
         yield f"❌ Erro ao iniciar o navegador: {e}"
         return
 
+    def espera_aleatoria(min_secs=0.5, max_secs=1.5):
+        sleep(random.uniform(min_secs, max_secs))
+
+    def digitar_como_humano(elemento, texto):
+        for letra in texto:
+            elemento.send_keys(letra)
+            sleep(random.uniform(0.05, 0.15))
+
+    def rolagem_suave(pixels=1000, passos=20):
+        # Rolagem gradual para parecer orgânico
+        pixels_por_passo = pixels / passos
+        for _ in range(passos):
+            driver.execute_script(f"window.scrollBy(0, {pixels_por_passo});")
+            sleep(random.uniform(0.02, 0.06))
+
     def encontrar_e_clicar(by, selector, cliques=1, intervalo=1):
+        # Atraso rápido antes de focar / clicar
+        espera_aleatoria(0.2, 0.6)
         elemento = wait.until(EC.element_to_be_clickable((by, selector)))
-        for _ in range(cliques):
+        for i in range(cliques):
             elemento.click()
-            if cliques > 1:
-                sleep(intervalo)
+            if cliques > 1 and i < cliques - 1:
+                espera_aleatoria(intervalo * 0.8, intervalo * 1.2)
         return elemento
 
     try:
@@ -102,8 +135,15 @@ def executar_automacao(
         yield "🔐 Acessando página de login..."
         driver.get("https://mb4.bernoulli.com.br/login")
 
-        wait.until(EC.presence_of_element_located((By.ID, "re-login"))).send_keys(login)
-        wait.until(EC.presence_of_element_located((By.ID, "input-pass"))).send_keys(senha)
+        espera_aleatoria(1.0, 2.0)
+        input_login = wait.until(EC.presence_of_element_located((By.ID, "re-login")))
+        digitar_como_humano(input_login, login)
+        
+        espera_aleatoria(0.3, 0.7)
+        input_pass = wait.until(EC.presence_of_element_located((By.ID, "input-pass")))
+        digitar_como_humano(input_pass, senha)
+        
+        espera_aleatoria(0.5, 1.0)
         encontrar_e_clicar(By.CLASS_NAME, "fill--bernoulli")
         yield "🔐 Login enviado, aguardando autenticação..."
 
@@ -118,15 +158,20 @@ def executar_automacao(
         encontrar_e_clicar(By.XPATH, "//button[contains(@class, 'IButton') and contains(@class, 'action')]")
         encontrar_e_clicar(By.XPATH, "//div[text()='Configurações']")
         encontrar_e_clicar(By.XPATH, "//button[.//div[text()='Chaves']]")
-        sleep(1)
+        espera_aleatoria(1.5, 2.5)
 
-        # --- Ordenar por ano letivo ---
-        encontrar_e_clicar(By.XPATH, "//th[.//span[text()='Ano letivo']]//button", cliques=2, intervalo=2)
-        sleep(1)
-        yield "📋 Tabela ordenada por ano letivo."
+        # --- Aba 'Todos' e Ordenação ---
+        yield "🔄 Selecionando aba 'Todos'..."
+        encontrar_e_clicar(By.XPATH, "//div[@role='button' and @aria-label='Todos']")
+        espera_aleatoria(1.0, 2.0)
+
+        yield "📅 Ordenando por Data de criação..."
+        encontrar_e_clicar(By.XPATH, "//th[.//span[contains(text(), 'criação')]]//button", cliques=2, intervalo=2)
+        espera_aleatoria(1.0, 2.0)
 
         # --- Mostrar 50 por página ---
-        driver.execute_script("window.scrollBy(0, 1000);")
+        espera_aleatoria(1.0, 2.0)
+        rolagem_suave(1000, passos=25)
         elemento = wait.until(EC.element_to_be_clickable((
             By.XPATH, "//div[contains(@class, 'select--head')][.//span[contains(text(), '10 por página')]]"
         )))
@@ -148,8 +193,10 @@ def executar_automacao(
         )
         linha = wait.until(EC.presence_of_element_located((By.XPATH, xpath_linha)))
         botao = linha.find_element(By.XPATH, ".//button[.//i[contains(@class, 'ph-key')]]")
+        
+        espera_aleatoria(0.5, 1.2)
         driver.execute_script("arguments[0].click();", botao)
-        sleep(2)
+        espera_aleatoria(2.0, 3.0)
         yield "✅ Linha encontrada. Modal de ativação em massa aberto."
 
         # --- Ler arquivo de alunos (CSV ou Excel) ---
@@ -181,7 +228,11 @@ def executar_automacao(
             if nome_normalizado in nomes_pagina:
                 span = nomes_pagina[nome_normalizado]
                 label = span.find_element(By.XPATH, "./ancestor::label")
+                
+                # Pausa bem mais curta para agilizar a marcação
+                espera_aleatoria(0.01, 0.05)
                 driver.execute_script("arguments[0].click();", label)
+                
                 encontrados.append(nome)
                 yield f"✅ {nome}"
             else:
